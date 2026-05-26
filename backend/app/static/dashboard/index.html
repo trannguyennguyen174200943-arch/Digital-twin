@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Giám sát PHCN — Rehab Digital Twin</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,600;0,9..40,700;1,9..40,400&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="styles.css" />
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+</head>
+<body>
+  <header class="topbar">
+    <div class="brand">
+      <span class="brand-icon" aria-hidden="true">◆</span>
+      <div>
+        <h1>Rehab Monitor</h1>
+        <p class="subtitle">Phục hồi chức năng · Digital Twin</p>
+      </div>
+    </div>
+    <div class="patient-field">
+      <label for="patientId">Mã BN</label>
+      <input id="patientId" type="text" value="P001" maxlength="32" />
+    </div>
+  </header>
+
+  <main class="layout">
+    <section class="kpi-grid" aria-label="Chỉ số tổng quan">
+      <article class="kpi-card" id="kpiConnection">
+        <span class="kpi-label">Kết nối thiết bị</span>
+        <span class="kpi-value status-pill" data-state="off">Disconnected</span>
+      </article>
+      <article class="kpi-card">
+        <span class="kpi-label">Góc lớn nhất hôm nay</span>
+        <span class="kpi-value" id="kpiMaxAngle">— °</span>
+      </article>
+      <article class="kpi-card">
+        <span class="kpi-label">ROM phiên / Hoàn thành</span>
+        <span class="kpi-value" id="kpiRom">— ° · — %</span>
+      </article>
+      <article class="kpi-card alert-card" id="kpiAlert">
+        <span class="kpi-label">Cảnh báo an toàn</span>
+        <span class="kpi-value" id="kpiSafety">Bình thường</span>
+      </article>
+    </section>
+
+    <div id="emergencyBanner" class="emergency-banner hidden" role="alert">
+      EMERGENCY STOP — Thiết bị đã ngắt lực cản. Kiểm tra tư thế bệnh nhân.
+    </div>
+
+    <section class="charts-row">
+      <article class="panel chart-panel">
+        <h2>Góc khớp (°)</h2>
+        <canvas id="angleChart" height="120"></canvas>
+      </article>
+      <article class="panel chart-panel">
+        <h2>Lực cơ / Kháng lực</h2>
+        <p class="chart-hint">Đường xanh: proxy flex · Đường cam: lực cản áp dụng</p>
+        <canvas id="forceChart" height="120"></canvas>
+      </article>
+    </section>
+
+    <section class="panel control-panel">
+      <h2>Điều chỉnh kháng lực từ xa</h2>
+      <div class="control-row">
+        <input type="range" id="forceSlider" min="0" max="255" value="128" />
+        <output id="forceValue" for="forceSlider">128</output>
+        <span class="unit">/ 255</span>
+      </div>
+      <div class="control-actions">
+        <button type="button" id="btnApply" class="btn btn-primary">Áp dụng lực cản</button>
+        <button type="button" id="btnRelease" class="btn btn-ghost">Nhả (0)</button>
+        <select id="forceDirection" aria-label="Chiều lực">
+          <option value="1">Chiều +1</option>
+          <option value="-1">Chiều −1</option>
+          <option value="0">Coast (0)</option>
+        </select>
+      </div>
+      <p id="controlStatus" class="control-status" aria-live="polite"></p>
+    </section>
+  </main>
+
+  <script src="app.js"></script>
+</body>
+</html>

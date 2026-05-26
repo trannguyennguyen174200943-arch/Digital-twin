@@ -1,0 +1,2 @@
+# Cài vào Python mà Webots sử dụng (Preferences → Python command)
+websocket-client>=1.8.0
